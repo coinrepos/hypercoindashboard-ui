@@ -1,17 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// src/index.js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import WrappedHyperCoinDashboard from "./WrappedHyperCoinDashboard";
+import BridgeUI from "./BridgeUI";
+import DAOVoting from "./DAOVoting";
+import StockCoinMintForm from "./StockCoinMintForm";
+import HyperSwap from "./HyperSwap";
+
+import "./App.css";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route path="/" element={<WrappedHyperCoinDashboard />} />
+        <Route path="/bridge" element={<BridgeUI />} />
+        <Route path="/dao" element={<DAOVoting />} />
+        <Route path="/stock" element={<StockCoinMintForm />} />
+        <Route path="/swap" element={<HyperSwap />} />
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

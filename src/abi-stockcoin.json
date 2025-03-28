@@ -1,0 +1,15 @@
+[
+  {
+    "inputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "string", "name": "description", "type": "string" },
+      { "internalType": "string", "name": "documentURI", "type": "string" },
+      { "internalType": "uint256", "name": "validatorCut", "type": "uint256" },
+      { "internalType": "uint256", "name": "priceInHype", "type": "uint256" }
+    ],
+    "name": "mintStockCoin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

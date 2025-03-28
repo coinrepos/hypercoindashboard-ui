@@ -1,0 +1,16 @@
+[
+  {
+    "name": "getRate",
+    "type": "function",
+    "inputs": [{ "name": "amountIn", "type": "uint256" }],
+    "outputs": [{ "name": "amountOut", "type": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swap",
+    "type": "function",
+    "inputs": [{ "name": "amountIn", "type": "uint256" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

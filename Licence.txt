@@ -1,0 +1,15 @@
+
+---
+
+### 📄 `LICENSE` (Proprietary – Non-Open Source)
+```text
+HyperOS – Proprietary License
+
+All source code, intellectual property, and technology contained within this repository are the exclusive property of the HyperCoin Protocol.
+
+You may not copy, modify, distribute, sublicense, or use this software in any commercial or public manner without prior written authorization.
+
+Copyright © 2025 HyperCoin Protocol. All rights reserved.
+All Rights Reserved.
+You may not reproduce, distribute, or create derivative works without explicit permission from the HyperCoin Protocol.
+
