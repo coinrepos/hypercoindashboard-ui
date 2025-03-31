@@ -2,12 +2,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import WrappedHyperCoinDashboard from "./WrappedHyperCoinDashboard";
+import WrappedHyperCoinDashboard from "./WrappedHyperCoinDashboard.jsx";
 import StockCoinMintForm from "./StockCoinMintForm";
 import DAOVoting from "./DAOVoting";
 import HyperSwap from "./HyperSwap";
 import BridgeUI from "./BridgeUI";
-import InsurancePool from "./InsurancePool"; // ← optional UI to be provided if not yet built
+import InsurancePool from "./InsurancePool"; // Optional
 
 function App() {
   return (

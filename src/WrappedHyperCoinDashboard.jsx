@@ -1,4 +1,5 @@
-// 📁 C:\Projects\hypercoindashboard-ui\src\WrappedHyperCoinDashboard.jsx
+// 📂 C:\Projects\hypercoindashboard-ui\src\WrappedHyperCoinDashboard.jsx
+
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import abi from "./abi.json";
@@ -21,7 +22,7 @@ import GlobalToggle from "./GlobalToggle";
 import LiveFeedPanel from "./LiveFeedPanel";
 import NoWalletAlert from "./NoWalletAlert";
 import StockCoinMintForm from "./StockCoinMintForm";
-import BridgePanel from "./BridgePanel";
+import HyperSwap from "./HyperSwap";
 import BridgeUI from "./BridgeUI";
 
 export default function WrappedHyperCoinDashboard() {
@@ -46,10 +47,12 @@ export default function WrappedHyperCoinDashboard() {
       const address = accounts[0];
       setUserAddress(address);
       setStatus(`✅ Connected: ${address.slice(0, 6)}...${address.slice(-4)}`);
+
       const provider = new ethers.BrowserProvider(wallet);
       const signer = await provider.getSigner();
       const balance = await provider.getBalance(address);
       setRBTCBalance(ethers.formatEther(balance));
+
       const hype = new ethers.Contract(HYPERCOIN_CONTRACT, abi, signer);
       const hypeBal = await hype.balanceOf(address);
       setHypeBalance(ethers.formatUnits(hypeBal, 18));
@@ -94,13 +97,13 @@ export default function WrappedHyperCoinDashboard() {
 
           <GlobalToggle onModeChange={(mode) => console.log("🧠 Mode set to:", mode)} isAdmin={IS_ADMIN} />
           <InTaxSwap onSwapComplete={() => connectWallet()} />
+          <HyperSwap />
           <HyperBurn />
           <DAOVoting />
           <TreasuryControls />
           <StockCoinMintForm />
-          <BridgePanel />
+          <BridgeUI />
           <LiveFeedPanel />
-		  <BridgeUI />
         </>
       )}
     </div>
