@@ -3,11 +3,11 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import WrappedHyperCoinDashboard from "./WrappedHyperCoinDashboard.jsx";
-import StockCoinMintForm from "./StockCoinMintForm";
-import DAOVoting from "./DAOVoting";
-import HyperSwap from "./HyperSwap";
-import BridgeUI from "./BridgeUI";
-import InsurancePool from "./InsurancePool"; // Optional
+import StockCoinMintForm from "./StockCoinMintForm.jsx";
+import DAOVoting from "./DAOVoting.jsx";
+import HyperSwap from "./HyperSwap.jsx";
+import BridgeUI from "./BridgeUI.jsx";
+import InsurancePool from "./InsurancePool.jsx";
 
 function App() {
   return (
