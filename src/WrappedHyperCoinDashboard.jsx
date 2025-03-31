@@ -14,16 +14,16 @@ import {
 } from "./config";
 
 // 🧩 Components
-import HyperBurn from "./HyperBurn";
-import InTaxSwap from "./InTaxSwap";
-import TreasuryControls from "./TreasuryControls";
-import DAOVoting from "./DAOVoting";
-import GlobalToggle from "./GlobalToggle";
-import LiveFeedPanel from "./LiveFeedPanel";
-import NoWalletAlert from "./NoWalletAlert";
-import StockCoinMintForm from "./StockCoinMintForm";
-import HyperSwap from "./HyperSwap";
-import BridgeUI from "./BridgeUI";
+import HyperBurn from "./import HyperBurn from "./HyperBurn.jsx";;
+import InTaxSwap from "./import InTaxSwap from "./InTaxSwap.jsx";
+import TreasuryControls from "./import TreasuryControls from "./TreasuryControls.jsx";
+import DAOVoting from "./import DAOVoting from "./DAOVoting.jsx";
+import GlobalToggle from "./import GlobalToggle from "./GlobalToggle.jsx";
+import LiveFeedPanel from "./import LiveFeedPanel from "./LiveFeedPanel.jsx";
+import NoWalletAlert from "./import NoWalletAlert from "./NoWalletAlert.jsx";
+import StockCoinMintForm from "./import StockCoinMintForm from "./StockCoinMintForm.jsx";
+import HyperSwap from ".//HyperSwap.jsx";
+import BridgeUI from "./import BridgeUI from "./BridgeUI.jsx";
 
 export default function WrappedHyperCoinDashboard() {
   const [wallet, setWallet] = useState(null);
