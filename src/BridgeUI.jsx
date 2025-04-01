@@ -1,8 +1,7 @@
 // src/BridgeUI.jsx
 import React, { useState } from "react";
-import BridgeUI from "./BridgeUI";
 
-export default function BridgeUI() {
+export default function BridgePanel() {
   const [btcAddress, setBtcAddress] = useState("");
   const [status, setStatus] = useState("");
 
@@ -23,20 +22,16 @@ export default function BridgeUI() {
   };
 
   return (
-    <div style={{ background: "#1e293b", padding: "1.5rem", marginTop: "2rem", borderRadius: "8px" }}>
+    <div>
       <h3>🔁 BTC → RBTC Bridge</h3>
       <input
         type="text"
         placeholder="Your BTC Address"
         value={btcAddress}
         onChange={(e) => setBtcAddress(e.target.value)}
-        style={{ padding: "0.5rem", width: "60%", marginRight: "1rem" }}
       />
-      <button onClick={submitBridge} style={{ padding: "0.5rem 1.5rem", background: "#22c55e" }}>
-        🚀 Start Bridge
-      </button>
+      <button onClick={submitBridge}>🚀 Start Bridge</button>
       <p>{status}</p>
-	  <BridgeUI />
     </div>
   );
 }
