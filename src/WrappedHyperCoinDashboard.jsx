@@ -13,17 +13,17 @@ import {
   IS_ADMIN
 } from "./config";
 
-// 🧩 Components
-import HyperBurn from "./import HyperBurn from "./HyperBurn.jsx";;
-import InTaxSwap from "./import InTaxSwap from "./InTaxSwap.jsx";
-import TreasuryControls from "./import TreasuryControls from "./TreasuryControls.jsx";
-import DAOVoting from "./import DAOVoting from "./DAOVoting.jsx";
-import GlobalToggle from "./import GlobalToggle from "./GlobalToggle.jsx";
-import LiveFeedPanel from "./import LiveFeedPanel from "./LiveFeedPanel.jsx";
-import NoWalletAlert from "./import NoWalletAlert from "./NoWalletAlert.jsx";
-import StockCoinMintForm from "./import StockCoinMintForm from "./StockCoinMintForm.jsx";
-import HyperSwap from ".//HyperSwap.jsx";
-import BridgeUI from "./import BridgeUI from "./BridgeUI.jsx";
+// 🧩 Components (.jsx extension for Vercel strict mode)
+import HyperBurn from "./HyperBurn.jsx";
+import InTaxSwap from "./InTaxSwap.jsx";
+import TreasuryControls from "./TreasuryControls.jsx";
+import DAOVoting from "./DAOVoting.jsx";
+import GlobalToggle from "./GlobalToggle.jsx";
+import LiveFeedPanel from "./LiveFeedPanel.jsx";
+import NoWalletAlert from "./NoWalletAlert.jsx";
+import StockCoinMintForm from "./StockCoinMintForm.jsx";
+import HyperSwap from "./HyperSwap.jsx";
+import BridgeUI from "./BridgeUI.jsx";
 
 export default function WrappedHyperCoinDashboard() {
   const [wallet, setWallet] = useState(null);
