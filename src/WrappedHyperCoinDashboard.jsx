@@ -1,5 +1,3 @@
-// 📂 C:\Projects\hypercoindashboard-ui\src\WrappedHyperCoinDashboard.jsx
-
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import abi from "./abi.json";
@@ -13,7 +11,6 @@ import {
   IS_ADMIN
 } from "./config";
 
-// 🧩 Components (.jsx extension for Vercel strict mode)
 import HyperBurn from "./HyperBurn.jsx";
 import InTaxSwap from "./InTaxSwap.jsx";
 import TreasuryControls from "./TreasuryControls.jsx";
