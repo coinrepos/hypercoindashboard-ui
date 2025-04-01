@@ -10,7 +10,7 @@ import InsurancePool from "./InsurancePool.jsx";
 
 function App() {
   return (
-    <Router>
+    <Router>F
       <Routes>
         <Route path="/" element={<WrappedHyperCoinDashboard />} />
         <Route path="/mint" element={<StockCoinMintForm />} />
