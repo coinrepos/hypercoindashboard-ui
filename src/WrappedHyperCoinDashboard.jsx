@@ -1,5 +1,3 @@
-// 📂 src/WrappedHyperCoinDashboard.jsx
-
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import abi from "./abi.json";
@@ -7,13 +5,12 @@ import {
   HYPERCOIN_CONTRACT,
   APP_NAME,
   TOKEN_SYMBOL,
+  TAX_TOKEN,
+  BASE_RATE,
+  IPFS_ENABLED,
   IS_ADMIN,
-  TAX_TOKEN as _TAX_TOKEN,
-  BASE_RATE as _BASE_RATE,
-  IPFS_ENABLED as _IPFS_ENABLED,
-} from "./config.js";
+} from "./config";
 
-// 🧩 Components with full extension
 import HyperBurn from "./HyperBurn.jsx";
 import InTaxSwap from "./InTaxSwap.jsx";
 import TreasuryControls from "./TreasuryControls.jsx";
@@ -78,7 +75,7 @@ export default function WrappedHyperCoinDashboard() {
           border: "none",
           borderRadius: "6px",
           marginBottom: "1rem",
-          fontWeight: "bold"
+          fontWeight: "bold",
         }}
       >
         {userAddress ? "Wallet Connected" : "Connect Wallet"}
@@ -90,12 +87,22 @@ export default function WrappedHyperCoinDashboard() {
         <>
           <div style={{ marginTop: "1.5rem" }}>
             <h3>💳 Wallet Info</h3>
-            <p><strong>Address:</strong> {userAddress}</p>
-            <p><strong>RBTC Balance:</strong> {rbtcBalance} RBTC</p>
-            <p><strong>{TOKEN_SYMBOL} Balance:</strong> {hypeBalance} {TOKEN_SYMBOL}</p>
+            <p>
+              <strong>Address:</strong> {userAddress}
+            </p>
+            <p>
+              <strong>RBTC Balance:</strong> {rbtcBalance} RBTC
+            </p>
+            <p>
+              <strong>{TOKEN_SYMBOL} Balance:</strong> {hypeBalance}{" "}
+              {TOKEN_SYMBOL}
+            </p>
           </div>
 
-          <GlobalToggle onModeChange={(mode) => console.log("🧠 Mode set to:", mode)} isAdmin={IS_ADMIN} />
+          <GlobalToggle
+            onModeChange={(mode) => console.log("🧠 Mode set to:", mode)}
+            isAdmin={IS_ADMIN}
+          />
           <InTaxSwap onSwapComplete={() => connectWallet()} />
           <HyperSwap />
           <HyperBurn />

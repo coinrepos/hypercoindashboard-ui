@@ -1,7 +1,7 @@
 // src/BridgeUI.jsx
 import React, { useState } from "react";
 
-export default function BridgeUI() {
+export default function BridgeUIComponent() { ... }
   const [btcAddress, setBtcAddress] = useState("");
   const [status, setStatus] = useState("");
 
