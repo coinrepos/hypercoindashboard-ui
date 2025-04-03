@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios.js";
 
 // 👇 Replace with BTC address(es) involved in your Changelly/FastBTC bridge
 const btcAddresses = [

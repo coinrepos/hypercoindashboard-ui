@@ -1,5 +1,5 @@
 // src/BridgeBTCWatcher.js
-import axios from "axios";
+import axios from "axios"; // ✅ Corrected import
 
 const BTC_ADDRESS = "bc1q5lnjr4y2lfyee9gt9gfchcswcd8xg4zyjdmfknvqtjfcxcyxwhzqf4gjmt"; // Replace with yours
 const POLL_INTERVAL_MS = 30000; // 30 seconds

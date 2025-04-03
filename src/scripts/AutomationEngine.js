@@ -1,8 +1,8 @@
 // src/scripts/AutomationEngine.js
-import fs from "fs";
-import axios from "axios";
-import path from "path";
-import cron from "node-cron";
+import fs from "fs.js";
+import axios from "axios.js";
+import path from "path.js";
+import cron from "node-cron.js";
 
 const IPFS_UPLOAD_URL = "https://api.web3.storage/upload"; // Replace if needed
 const IPFS_API_KEY = process.env.IPFS_API_KEY || "YOUR_API_KEY"; // Secure this in prod

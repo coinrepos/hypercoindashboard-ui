@@ -1,35 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-export default function GlobalToggle({ onModeChange, isAdmin }) {
-  const [mode, setMode] = useState("Citizen");
-
-  const toggleMode = () => {
-    const newMode = mode === "Citizen" ? "Admin" : "Citizen";
-    setMode(newMode);
-    if (onModeChange) onModeChange(newMode);
-  };
-
+export default function GlobalToggle({ mode, onModeChange, isAdmin }) {
   useEffect(() => {
-    if (onModeChange) onModeChange(mode);
-  }, []);
+    console.log("?? Mode changed:", mode);
+    // Future logic can be added here
+  }, [mode, onModeChange]);
 
   return (
-    <div style={{ marginTop: "1.5rem", background: "#334155", padding: "1rem", borderRadius: "6px" }}>
-      <p>
-        🧠 Mode: <strong>{mode}</strong>
-      </p>
+    <div style={{ marginBottom: "1rem" }}>
       {isAdmin && (
         <button
-          onClick={toggleMode}
+          onClick={() => onModeChange(mode === "admin" ? "user" : "admin")}
           style={{
-            background: "#facc15",
             padding: "0.5rem 1rem",
-            fontWeight: "bold",
-            borderRadius: "4px",
-            color: "#1e293b",
+            backgroundColor: "#3b82f6",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
           }}
         >
-          Toggle Mode
+          ?? Switch Mode
         </button>
       )}
     </div>
