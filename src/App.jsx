@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -7,7 +6,7 @@ import StockCoinMintForm from "./StockCoinMintForm.jsx";
 import DAOVoting from "./DAOVoting.jsx";
 import HyperSwap from "./HyperSwap.jsx";
 import BridgeUI from "./BridgeUI.jsx";
-import InsurancePool from "./InsurancePool.jsx"; // Optional but must exist
+import InsurancePool from "./InsurancePool.jsx"; // Optional
 
 function App() {
   return (
@@ -25,4 +24,3 @@ function App() {
 }
 
 export default App;
-
