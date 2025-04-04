@@ -7,6 +7,7 @@ import BridgeUI from "./BridgeUI.jsx";
 import DAOVoting from "./DAOVoting.jsx";
 import StockCoinMintForm from "./StockCoinMintForm.jsx";
 import HyperSwap from "./HyperSwap.jsx";
+import InsurancePool from "./InsurancePool.jsx"; // optional component
 
 import "./App.css";
 
@@ -20,6 +21,7 @@ root.render(
         <Route path="/dao" element={<DAOVoting />} />
         <Route path="/stock" element={<StockCoinMintForm />} />
         <Route path="/swap" element={<HyperSwap />} />
+        <Route path="/insurance" element={<InsurancePool />} />
       </Routes>
     </Router>
   </React.StrictMode>
