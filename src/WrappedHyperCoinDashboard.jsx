@@ -1,4 +1,5 @@
 // src/WrappedHyperCoinDashboard.jsx
+
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import abi from "./abi.json";
@@ -6,9 +7,13 @@ import {
   HYPERCOIN_CONTRACT,
   APP_NAME,
   TOKEN_SYMBOL,
+  TAX_TOKEN, // eslint-disable-next-line
+  BASE_RATE, // eslint-disable-next-line
+  IPFS_ENABLED, // eslint-disable-next-line
   IS_ADMIN
 } from "./config.js";
 
+import HyperBurn from "./HyperBurn.jsx";
 import InTaxSwap from "./InTaxSwap.jsx";
 import TreasuryControls from "./TreasuryControls.jsx";
 import DAOVoting from "./DAOVoting.jsx";
@@ -19,7 +24,8 @@ import StockCoinMintForm from "./StockCoinMintForm.jsx";
 import HyperSwap from "./HyperSwap.jsx";
 import BridgeUI from "./BridgeUI.jsx";
 import GoPrivateButton from "./components/GoPrivateButton.jsx";
-import HyperBotDock from "./HyperBotDock.jsx";
+import HyperBotAdminPanel from "./HyperBotAdminPanel.jsx";
+import BurnUnlockZone from "./components/BurnUnlockZone.jsx";
 
 export default function WrappedHyperCoinDashboard() {
   const [wallet, setWallet] = useState(null);
@@ -29,8 +35,11 @@ export default function WrappedHyperCoinDashboard() {
   const [hypeBalance, setHypeBalance] = useState(null);
 
   useEffect(() => {
-    if (window.ethereum) setWallet(window.ethereum);
-    else setStatus("❌ MetaMask not detected.");
+    if (typeof window.ethereum !== "undefined") {
+      setWallet(window.ethereum);
+    } else {
+      setStatus("❌ MetaMask not detected.");
+    }
   }, []);
 
   const connectWallet = async () => {
@@ -57,9 +66,11 @@ export default function WrappedHyperCoinDashboard() {
 
   return (
     <div style={{ padding: "2rem", backgroundColor: "#0f172a", color: "#fff" }}>
-      <h1>🌐 {APP_NAME} Dashboard</h1>
+      <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
+        🌐 {APP_NAME} Dashboard
+      </h1>
+
       <GoPrivateButton />
-      <HyperBotDock />
 
       {!wallet && <NoWalletAlert />}
       <button
@@ -88,15 +99,19 @@ export default function WrappedHyperCoinDashboard() {
             <p><strong>{TOKEN_SYMBOL} Balance:</strong> {hypeBalance} {TOKEN_SYMBOL}</p>
           </div>
 
-          <GlobalToggle onModeChange={(mode) => console.log("🧠 Mode set to:", mode)} isAdmin={IS_ADMIN} />
+          <GlobalToggle
+            onModeChange={(mode) => console.log("🧠 Mode set to:", mode)}
+            isAdmin={IS_ADMIN}
+          />
           <InTaxSwap onSwapComplete={() => connectWallet()} />
           <HyperSwap />
-          {/* 🔥 Burn removed for protection, available in admin or modal version */}
           <DAOVoting />
           <TreasuryControls />
           <StockCoinMintForm />
           <BridgeUI />
           <LiveFeedPanel />
+          <HyperBotAdminPanel />
+          <BurnUnlockZone />
         </>
       )}
     </div>
