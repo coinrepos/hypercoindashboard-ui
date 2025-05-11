@@ -1,55 +1,31 @@
-// src/TreasuryControls.jsx
 import React from "react";
-import {
-  APP_NAME,
-  TOKEN_SYMBOL,
-  INTAX_NAME,
-  ORGANIZATION_NAME
-} from "./config";
+import { APP_NAME, TOKEN_SYMBOL, TAX_TOKEN, BASE_RATE, INTAX_NAME } from "./config";
 
 export default function TreasuryControls() {
   return (
-    <div
-      style={{
-        backgroundColor: "#1e293b",
-        padding: "1.5rem",
-        borderRadius: "10px",
-        color: "#f8fafc",
-        maxWidth: "600px",
-        marginTop: "2rem",
-      }}
-    >
-      <h2>🏦 {APP_NAME} Treasury Controls</h2>
+    <div style={{ background: "#1e293b", padding: "1.5rem", marginTop: "2rem", borderRadius: "8px" }}>
+      <h3>🏦 Treasury Controls</h3>
       <p>
-        Welcome, <strong>{ORGANIZATION_NAME}</strong>. You may perform treasury operations,
-        apply taxes, manage staking rewards, and oversee {INTAX_NAME} policy.
+        Manage liquidity, burn taxes, and set economic parameters for <strong>{APP_NAME}</strong>.
       </p>
-
-      <ul style={{ marginTop: "1rem" }}>
-        <li>🧾 View Total {TOKEN_SYMBOL} Supply</li>
-        <li>💸 Adjust {INTAX_NAME} Burn Thresholds</li>
-        <li>🔐 Lock/Unlock Treasury Contracts</li>
-        <li>📈 Set Inflation Reward %</li>
+      <ul style={{ paddingLeft: "1.2rem" }}>
+        <li>📈 Base Rate: <strong>{BASE_RATE}</strong></li>
+        <li>💰 Token: <strong>{TOKEN_SYMBOL}</strong></li>
+        <li>🔥 Tax Token: <strong>{TAX_TOKEN} / {INTAX_NAME}</strong></li>
       </ul>
-
-      <div style={{ marginTop: "1.5rem" }}>
-        <button style={styles.button}>Issue {TOKEN_SYMBOL}</button>
-        <button style={styles.button}>Burn {INTAX_NAME}</button>
-        <button style={styles.button}>Stake Allocations</button>
-      </div>
+      <button
+        style={{
+          marginTop: "1rem",
+          padding: "0.6rem 1.5rem",
+          background: "#ef4444",
+          color: "#fff",
+          border: "none",
+          borderRadius: "6px"
+        }}
+        onClick={() => alert("Burn executed (simulated)")}
+      >
+        🔥 Burn Reserve
+      </button>
     </div>
   );
 }
-
-const styles = {
-  button: {
-    marginRight: "1rem",
-    marginTop: "1rem",
-    padding: "10px 14px",
-    borderRadius: "6px",
-    backgroundColor: "#22d3ee",
-    color: "#0f172a",
-    fontWeight: "bold",
-    border: "none",
-  },
-};

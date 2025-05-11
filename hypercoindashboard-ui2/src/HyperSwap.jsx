@@ -1,6 +1,5 @@
-// src/HyperSwap.jsx
 import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
+import { Contract, parseUnits, formatUnits, BrowserProvider } from "ethers";
 import routerAbi from "./abi-router.json";
 import { ROUTER_CONTRACT, TOKEN_SYMBOL, TAX_TOKEN } from "./config";
 
@@ -11,36 +10,40 @@ export default function HyperSwap() {
   const [signer, setSigner] = useState(null);
 
   useEffect(() => {
-    if (window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      provider.getSigner().then(setSigner);
-    }
+    const init = async () => {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const s = await provider.getSigner();
+        setSigner(s);
+      }
+    };
+    init();
   }, []);
 
   const getEstimate = async () => {
     try {
-      const router = new ethers.Contract(ROUTER_CONTRACT, routerAbi, signer);
-      const amountIn = ethers.parseUnits(amount, 18);
-      const out = await router.getSwapEstimate(amountIn); // ✅ LIVE router method
-      setEstimatedOut(ethers.formatUnits(out, 18));
-      setStatus("✅ Rate fetched from Router");
+      const router = new Contract(ROUTER_CONTRACT, routerAbi, signer);
+      const amountIn = parseUnits(amount, 18);
+      const out = await router.getRate(amountIn); // router must support getRate()
+      setEstimatedOut(formatUnits(out, 18));
+      setStatus("✅ Rate fetched");
     } catch (err) {
       setStatus("❌ Failed to fetch rate");
-      console.error("🧯 Estimate error:", err);
+      console.error(err);
     }
   };
 
   const executeSwap = async () => {
     try {
-      const router = new ethers.Contract(ROUTER_CONTRACT, routerAbi, signer);
-      const amountIn = ethers.parseUnits(amount, 18);
-      const tx = await router.swapHypeToIntax(amountIn); // ✅ LIVE router method
+      const router = new Contract(ROUTER_CONTRACT, routerAbi, signer);
+      const amountIn = parseUnits(amount, 18);
+      const tx = await router.swap(amountIn); // router must support swap()
       setStatus("⏳ Waiting for confirmation...");
       await tx.wait();
       setStatus("✅ Swap completed!");
     } catch (err) {
       setStatus("❌ Swap failed");
-      console.error("🔥 Swap error:", err);
+      console.error(err);
     }
   };
 
@@ -62,7 +65,10 @@ export default function HyperSwap() {
           🔁 Estimated output: {estimatedOut} {TAX_TOKEN}
         </p>
       )}
-      <button onClick={executeSwap} style={{ padding: "0.6rem 1.5rem", background: "#22c55e", marginTop: "1rem" }}>
+      <button
+        onClick={executeSwap}
+        style={{ padding: "0.6rem 1.5rem", background: "#22c55e", marginTop: "1rem" }}
+      >
         🚀 Execute Swap
       </button>
       <p>{status}</p>

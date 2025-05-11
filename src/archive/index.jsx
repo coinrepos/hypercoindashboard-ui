@@ -1,33 +1,35 @@
-// src/App.jsx
+// src/index.jsx
 
 import React from "react";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import WrappedHyperCoinDashboard from "./WrappedHyperCoinDashboard.jsx";
-import StockCoinMintForm from "./StockCoinMintForm.jsx";
-import DAOVoting from "./DAOVoting.jsx";
-import HyperSwap from "./HyperSwap.jsx";
 import BridgeUI from "./BridgeUI.jsx";
-import InsurancePool from "./InsurancePool.jsx";
+import DAOVoting from "./DAOVoting.jsx";
+import StockCoinMintForm from "./StockCoinMintForm.jsx";
+import HyperSwap from "./HyperSwap.jsx";
 
 import { PrivacyProvider } from "./hooks/usePrivacyMode.js";
 import { HyperBotProvider } from "./HyperBotContext.jsx";
 
-export default function App() {
-  return (
+import "./App.css";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
     <PrivacyProvider>
       <HyperBotProvider>
         <Router>
           <Routes>
             <Route path="/" element={<WrappedHyperCoinDashboard />} />
-            <Route path="/mint" element={<StockCoinMintForm />} />
-            <Route path="/dao" element={<DAOVoting />} />
-            <Route path="/swap" element={<HyperSwap />} />
             <Route path="/bridge" element={<BridgeUI />} />
-            <Route path="/insurance" element={<InsurancePool />} />
+            <Route path="/dao" element={<DAOVoting />} />
+            <Route path="/stock" element={<StockCoinMintForm />} />
+            <Route path="/swap" element={<HyperSwap />} />
           </Routes>
         </Router>
       </HyperBotProvider>
     </PrivacyProvider>
-  );
-}
+  </React.StrictMode>
+);

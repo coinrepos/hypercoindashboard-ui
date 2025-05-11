@@ -1,103 +1,81 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ethers } from "ethers";
-import abi from "./abi.json";
-
-const HYPE_ADDRESS = "0xb83b08bd688739dcf499091B7596931c2DD8835F";
-const INTAX_ADDRESS = "0x000000000000000000000000000000000000dEaD"; // Replace with real INX address
-const CONVERSION_RATE = 1.0; // 1 INX = 1 HYPE (adjustable in DAO)
+import routerAbi from "./abi-router.json";
+import { ROUTER_CONTRACT, TOKEN_SYMBOL, TAX_TOKEN } from "./config";
 
 export default function InTaxSwap({ onSwapComplete }) {
-  const [account, setAccount] = useState("");
-  const [inxAmount, setInxAmount] = useState("");
-  const [status, setStatus] = useState("");
-  const [rate] = useState(CONVERSION_RATE);
-  const [inxBalance, setInxBalance] = useState(null);
-  const [hypeBalance, setHypeBalance] = useState(null);
+  const [amount, setAmount] = useState("");
+  const [estimatedOut, setEstimatedOut] = useState(null);
+  const [status, setStatus] = useState("Enter amount to swap");
+  const [isSwapping, setIsSwapping] = useState(false);
 
-  useEffect(() => {
-    const init = async () => {
-      if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const addr = await signer.getAddress();
-        setAccount(addr.toLowerCase());
-
-        const inx = new ethers.Contract(INTAX_ADDRESS, abi, signer);
-        const hype = new ethers.Contract(HYPE_ADDRESS, abi, signer);
-
-        const inxBal = await inx.balanceOf(addr);
-        const hypeBal = await hype.balanceOf(addr);
-
-        setInxBalance(ethers.utils.formatUnits(inxBal, 18));
-        setHypeBalance(ethers.utils.formatUnits(hypeBal, 18));
-      }
-    };
-    init();
-  }, []);
-
-  const handleSwap = async () => {
+  const getEstimate = async () => {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const inx = new ethers.Contract(INTAX_ADDRESS, abi, signer);
-      const hype = new ethers.Contract(HYPE_ADDRESS, abi, signer);
+      const signer = await provider.getSigner();
+      const router = new ethers.Contract(ROUTER_CONTRACT, routerAbi, signer);
 
-      const parsedAmount = ethers.utils.parseUnits(inxAmount, 18);
+      const amountIn = ethers.parseUnits(amount, 18);
+      const estimate = await router.getRate(amountIn); // Replace if function is named differently
+      setEstimatedOut(ethers.formatUnits(estimate, 18));
+      setStatus("✅ Rate fetched");
+    } catch (err) {
+      setStatus("❌ Failed to fetch rate");
+      console.error(err);
+    }
+  };
 
-      const burnTx = await inx.burn(parsedAmount); // Burn INX
-      setStatus("🔥 Burning INX...");
-      await burnTx.wait();
+  const executeSwap = async () => {
+    try {
+      setIsSwapping(true);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = await provider.getSigner();
+      const router = new ethers.Contract(ROUTER_CONTRACT, routerAbi, signer);
 
-      const mintTx = await hype.mint(account, parsedAmount); // Mint HYPE
-      setStatus("💸 Minting HYPE...");
-      await mintTx.wait();
-
-      setStatus("✅ Swap complete!");
-
+      const amountIn = ethers.parseUnits(amount, 18);
+      const tx = await router.swap(amountIn); // Replace with correct method name if needed
+      setStatus("⏳ Waiting for confirmation...");
+      await tx.wait();
+      setStatus("✅ Swap successful!");
+      setIsSwapping(false);
       if (onSwapComplete) onSwapComplete();
     } catch (err) {
-      console.error("❌ Swap failed:", err);
-      setStatus("❌ Swap failed. Check console.");
+      setStatus("❌ Swap failed");
+      setIsSwapping(false);
+      console.error(err);
     }
   };
 
   return (
-    <div style={{ marginTop: "2rem", padding: "1.5rem", backgroundColor: "#1f2937", borderRadius: "8px", color: "#fff" }}>
-      <h2>🔁 Intax ➜ HYPE Swap</h2>
-
-      <p>
-        Convert <strong>Intax</strong> to <strong>HyperCoin</strong> at a rate of{" "}
-        <strong>{rate}</strong>.
-      </p>
-
+    <div style={{ marginTop: "2rem", background: "#1e293b", padding: "1.5rem", borderRadius: "8px" }}>
+      <h3>💱 InTaxSwap</h3>
       <input
-        type="text"
-        placeholder="Amount of INX to Convert"
-        value={inxAmount}
-        onChange={(e) => setInxAmount(e.target.value)}
-        style={{ padding: "10px", marginBottom: "1rem", width: "100%" }}
+        type="number"
+        placeholder={`Amount in ${TOKEN_SYMBOL}`}
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        style={{ padding: "0.5rem", width: "60%", marginRight: "1rem" }}
       />
-
+      <button onClick={getEstimate} disabled={!amount} style={{ padding: "0.5rem 1rem", marginRight: "1rem" }}>
+        🔍 Estimate
+      </button>
+      {estimatedOut && (
+        <p>🔁 Output: {estimatedOut} {TAX_TOKEN}</p>
+      )}
       <button
-        onClick={handleSwap}
+        onClick={executeSwap}
+        disabled={isSwapping || !estimatedOut}
         style={{
-          padding: "10px 20px",
-          backgroundColor: "#0ea5e9",
-          color: "#fff",
-          border: "none",
-          borderRadius: "6px",
+          padding: "0.6rem 1.5rem",
+          background: isSwapping ? "#94a3b8" : "#22c55e",
+          color: "#000",
+          marginTop: "1rem",
           fontWeight: "bold"
         }}
       >
-        Convert to HYPE
+        🚀 {isSwapping ? "Swapping..." : "Swap Now"}
       </button>
-
-      <p style={{ marginTop: "1rem" }}>{status}</p>
-
-      <div style={{ marginTop: "1rem" }}>
-        <p>💰 INX Balance: {inxBalance}</p>
-        <p>🪙 HYPE Balance: {hypeBalance}</p>
-      </div>
+      <p>{status}</p>
     </div>
   );
 }

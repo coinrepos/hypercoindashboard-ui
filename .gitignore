@@ -1,27 +1,37 @@
-# Node.js
+# Write a .gitignore file tailored to preserve important files but exclude unnecessary or heavy folders
+
+gitignore_content = """
+# Dependency folders
 node_modules/
-.env
+.next/
 dist/
 build/
-.next/
-.cache/
+out/
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Environment files
+.env
+.env.local
+.env.*
 
-# OS
+# System files
 .DS_Store
-Thumbs.db
+*.log
 
-# Editor
-.vscode/
-.idea/
+# Backup and archive folders
+src_backup/
+hypercoin-app-final.zip/
+*.zip
+*.tar
 
-# Test coverage
-coverage/
+# Vercel and temporary files
+.vercel/
+*.tmp
+"""
 
-# Contracts / JSON artifacts
-src/abi*.json
-src/ipfs-cache
+# Save it in the parent dashboard directory
+gitignore_path = r"C:\Projects\hypercoindashboard-ui\.gitignore"
+
+with open(gitignore_path, "w") as f:
+    f.write(gitignore_content)
+
+gitignore_path

@@ -1,3 +1,5 @@
+// src/WrappedHyperCoinDashboard.jsx
+
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import abi from "./abi.json";
@@ -5,22 +7,25 @@ import {
   HYPERCOIN_CONTRACT,
   APP_NAME,
   TOKEN_SYMBOL,
-  TAX_TOKEN,
-  BASE_RATE,
-  IPFS_ENABLED,
   IS_ADMIN
-} from "./config";
+} from "./config.js";
 
-// 🔌 Components
-import HyperBurn from "./HyperBurn";
-import InTaxSwap from "./InTaxSwap";
-import TreasuryControls from "./TreasuryControls";
-import DAOVoting from "./DAOVoting";
-import GlobalToggle from "./GlobalToggle";
-import LiveFeedPanel from "./LiveFeedPanel";
-import NoWalletAlert from "./NoWalletAlert";
-import StockCoinMintForm from "./StockCoinMintForm";
-import HyperSwap from "./HyperSwap"; // 👈 NEW
+// ✅ Corrected paths for components
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/Tabs";
+import { Card, CardContent } from "./components/ui/Card";
+
+import HyperBurn from "./HyperBurn.jsx";
+import InTaxSwap from "./InTaxSwap.jsx";
+import TreasuryControls from "./TreasuryControls.jsx";
+import DAOVoting from "./DAOVoting.jsx";
+import GlobalToggle from "./GlobalToggle.jsx";
+import LiveFeedPanel from "./LiveFeedPanel.jsx";
+import StockCoinMintForm from "./StockCoinMintForm.jsx";
+import HyperSwap from "./HyperSwap.jsx";
+import BridgeUI from "./BridgeUI.jsx";
+import GoPrivateButton from "./components/GoPrivateButton.jsx";
+import HyperBotAdminPanel from "./HyperBotAdminPanel.jsx";
+import BurnUnlockZone from "./components/BurnUnlockZone.jsx";
 
 export default function WrappedHyperCoinDashboard() {
   const [wallet, setWallet] = useState(null);
@@ -40,15 +45,13 @@ export default function WrappedHyperCoinDashboard() {
   const connectWallet = async () => {
     try {
       if (!wallet) return setStatus("❌ No wallet detected.");
-
       const accounts = await wallet.request({ method: "eth_requestAccounts" });
       const address = accounts[0];
       setUserAddress(address);
       setStatus(`✅ Connected: ${address.slice(0, 6)}...${address.slice(-4)}`);
 
-      const provider = new ethers.BrowserProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(wallet);
       const signer = await provider.getSigner();
-
       const balance = await provider.getBalance(address);
       setRBTCBalance(ethers.formatEther(balance));
 
@@ -62,46 +65,56 @@ export default function WrappedHyperCoinDashboard() {
   };
 
   return (
-    <div style={{ padding: "2rem", backgroundColor: "#0f172a", color: "#fff" }}>
-      <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-        🌐 {APP_NAME} Dashboard
-      </h1>
+    <div className="p-4 text-white bg-slate-900 min-h-screen">
+      <h1 className="text-3xl font-bold mb-4">🌐 {APP_NAME} Dashboard</h1>
 
-      {!wallet && <NoWalletAlert />}
+      <GoPrivateButton />
       <button
         onClick={connectWallet}
-        style={{
-          padding: "12px 20px",
-          backgroundColor: "#22c55e",
-          color: "#000",
-          border: "none",
-          borderRadius: "6px",
-          marginBottom: "1rem",
-          fontWeight: "bold",
-        }}
+        className="bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded mb-4 font-bold"
       >
         {userAddress ? "Wallet Connected" : "Connect Wallet"}
       </button>
-
-      <p>{status}</p>
+      <p className="mb-6">{status}</p>
 
       {userAddress && (
-        <>
-          <div style={{ marginTop: "1.5rem" }}>
-            <h3>💳 Wallet Info</h3>
-            <p><strong>Address:</strong> {userAddress}</p>
-            <p><strong>RBTC Balance:</strong> {rbtcBalance} RBTC</p>
-            <p><strong>{TOKEN_SYMBOL} Balance:</strong> {hypeBalance} {TOKEN_SYMBOL}</p>
-          </div>
+        <Tabs defaultValue="dao" className="space-y-4">
+          <TabsList className="grid grid-cols-6">
+            <TabsTrigger value="dao">🗳 DAO</TabsTrigger>
+            <TabsTrigger value="bridge">🌉 Bridge</TabsTrigger>
+            <TabsTrigger value="mint">🧬 Mint</TabsTrigger>
+            <TabsTrigger value="swap">🔁 Swap</TabsTrigger>
+            <TabsTrigger value="burn">🔥 Burn</TabsTrigger>
+            <TabsTrigger value="live">📡 Live Feed</TabsTrigger>
+          </TabsList>
 
-          <GlobalToggle onModeChange={(mode) => console.log("🧠 Mode set to:", mode)} isAdmin={IS_ADMIN} />
-          <InTaxSwap onSwapComplete={() => connectWallet()} />
-          <HyperSwap /> {/* 🔁 NEW LIVE SWAP */}
-          <HyperBurn />
-          <DAOVoting />
+          <TabsContent value="dao">
+            <DAOVoting />
+          </TabsContent>
+          <TabsContent value="bridge">
+            <BridgeUI />
+          </TabsContent>
+          <TabsContent value="mint">
+            <StockCoinMintForm />
+          </TabsContent>
+          <TabsContent value="swap">
+            <HyperSwap />
+          </TabsContent>
+          <TabsContent value="burn">
+            <HyperBurn />
+            <BurnUnlockZone />
+          </TabsContent>
+          <TabsContent value="live">
+            <LiveFeedPanel />
+          </TabsContent>
+        </Tabs>
+      )}
+
+      {IS_ADMIN && (
+        <>
           <TreasuryControls />
-          <StockCoinMintForm />
-          <LiveFeedPanel />
+          <GlobalToggle isAdmin={IS_ADMIN} />
+          <HyperBotAdminPanel />
         </>
       )}
     </div>

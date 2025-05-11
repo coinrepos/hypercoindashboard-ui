@@ -1,129 +1,53 @@
-import React, { useState, useEffect } from "react";
+// src/HyperBurn.jsx
+import React, { useState } from "react";
 import { ethers } from "ethers";
 import abi from "./abi.json";
+import { HYPERCOIN_CONTRACT } from "./config.js";
 
-const HYPE_ADDRESS = "0xb83b08bd688739dcf499091B7596931c2DD8835F";
-const INTAX_ADDRESS = "0x000000000000000000000000000000000000dEaD"; // replace with actual INX
-const AUTHORIZED_ADDRESSES = [
-  "0xb83b08bd688739dcf499091B7596931c2DD8835F" // Admin or DAO wallet
-];
-
-// 🗳️ Simulated DAO toggle
-let daoApprovedBurn = true;
-
-export default function HyperBurn({ onBurnComplete }) {
-  const [currentAccount, setCurrentAccount] = useState("");
-  const [token, setToken] = useState("HYPE");
+export default function HyperBurn() {
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");
-  const [history, setHistory] = useState([]);
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [throttleCheck, setThrottleCheck] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  useEffect(() => {
-    const detect = async () => {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: "eth_accounts" });
-        if (accounts.length > 0) {
-          const addr = accounts[0].toLowerCase();
-          setCurrentAccount(addr);
-          setIsAuthorized(AUTHORIZED_ADDRESSES.includes(addr));
-        }
-      }
-    };
-    detect();
-  }, []);
-
-  const burnTokens = async () => {
-    if (!daoApprovedBurn) {
-      return setStatus("🛑 DAO voting has paused burning.");
-    }
-
-    if (parseFloat(amount) > 1000000) {
-      return setThrottleCheck(true); // Simulated time-lock throttle
-    }
-
+  const confirmBurn = async () => {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const target = token === "HYPE" ? HYPE_ADDRESS : INTAX_ADDRESS;
-      const contract = new ethers.Contract(target, abi, signer);
-
-      const tx = await contract.burn(ethers.utils.parseUnits(amount, 18));
-      setStatus("🔥 Burning...");
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(HYPERCOIN_CONTRACT, abi, signer);
+      const tx = await contract.burn(ethers.parseUnits(amount.toString(), 18));
+      setStatus("⏳ Burning...");
       await tx.wait();
-      setStatus("✅ Burn complete.");
-
-      const newRecord = {
-        time: new Date().toLocaleString(),
-        token,
-        amount
-      };
-      setHistory((prev) => [newRecord, ...prev]);
-
-      if (onBurnComplete) onBurnComplete();
+      setStatus("🔥 Burn complete!");
     } catch (err) {
-      console.error("❌ Burn failed", err);
+      console.error(err);
       setStatus("❌ Burn failed");
     }
+    setShowConfirm(false);
   };
 
-  if (!isAuthorized) return null;
-
   return (
-    <div style={{ backgroundColor: "#1e293b", padding: "1.5rem", borderRadius: "8px", color: "#fff", marginTop: "2rem" }}>
-      <h2>🔥 Token Burn Panel (Admin/Gov)</h2>
-
-      <label style={{ display: "block", marginBottom: "1rem" }}>
-        Select Token:
-        <select
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          style={{ marginLeft: "1rem", padding: "6px", borderRadius: "4px" }}
-        >
-          <option value="HYPE">HYPE</option>
-          <option value="INTAX">INTAX</option>
-        </select>
-      </label>
-
+    <div style={{ marginTop: "2rem", background: "#1e293b", padding: "1rem" }}>
+      <h3>🔥 Burn $HYPE</h3>
       <input
-        type="text"
-        placeholder="Amount to Burn"
+        type="number"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
-        style={{ padding: "10px", marginBottom: "1rem", width: "100%" }}
+        placeholder="Amount to burn"
       />
-
       <button
-        onClick={burnTokens}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#ef4444",
-          color: "#fff",
-          border: "none",
-          borderRadius: "6px",
-          fontWeight: "bold"
-        }}
+        onClick={() => setShowConfirm(true)}
+        style={{ background: "#ef4444", color: "white" }}
       >
-        Burn {token}
+        Burn
       </button>
-
-      <p style={{ marginTop: "1rem", color: "lightgreen" }}>{status}</p>
-
-      {throttleCheck && (
-        <p style={{ color: "#facc15" }}>
-          ⏱️ Burn amount exceeds limit. Timelock activated. Request DAO override.
-        </p>
+      {showConfirm && (
+        <div style={{ background: "#0f172a", padding: "1rem", marginTop: "1rem" }}>
+          <p>⚠️ Are you sure you want to burn {amount} $HYPE? This action is irreversible.</p>
+          <button onClick={confirmBurn}>Yes, burn it</button>
+          <button onClick={() => setShowConfirm(false)}>Cancel</button>
+        </div>
       )}
-
-      <div style={{ marginTop: "2rem" }}>
-        <h4>📦 Burn History</h4>
-        {history.map((item, i) => (
-          <p key={i}>
-            [{item.time}] {item.amount} {item.token}
-          </p>
-        ))}
-      </div>
+      <p>{status}</p>
     </div>
   );
 }
