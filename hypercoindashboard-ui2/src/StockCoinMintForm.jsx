@@ -1,6 +1,6 @@
 // src/StockCoinMintForm.jsx
 import React, { useState } from "react";
-import { ethers } from "ethers";
+import { Contract, providers, utils } from "ethers";
 import abi from "./abi-stockcoin.json";
 import { STOCKCOIN_CONTRACT, TOKEN_SYMBOL } from "./config.js";
 
@@ -13,10 +13,10 @@ export default function StockCoinMintForm() {
 
   const mint = async () => {
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = new ethers.Contract(STOCKCOIN_CONTRACT, abi, signer);
-      const priceInUnits = ethers.parseUnits(price.toString(), 18);
+      const provider = new providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new Contract(STOCKCOIN_CONTRACT, abi, signer);
+      const priceInUnits = utils.parseUnits(price.toString(), 18);
 
       setStatus("⏳ Minting...");
       const tx = await contract.mint(

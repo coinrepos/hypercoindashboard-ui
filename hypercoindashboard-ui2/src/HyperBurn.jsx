@@ -1,6 +1,5 @@
-// src/HyperBurn.jsx
 import React, { useState } from "react";
-import { ethers } from "ethers";
+import { Contract, utils, providers } from "ethers";
 import abi from "./abi.json";
 import { HYPERCOIN_CONTRACT } from "./config.js";
 
@@ -11,10 +10,11 @@ export default function HyperBurn() {
 
   const confirmBurn = async () => {
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = new ethers.Contract(HYPERCOIN_CONTRACT, abi, signer);
-      const tx = await contract.burn(ethers.parseUnits(amount.toString(), 18));
+      const provider = new providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new Contract(HYPERCOIN_CONTRACT, abi, signer);
+      const amountInWei = utils.parseUnits(amount.toString(), 18);
+      const tx = await contract.burn(amountInWei);
       setStatus("⏳ Burning...");
       await tx.wait();
       setStatus("🔥 Burn complete!");

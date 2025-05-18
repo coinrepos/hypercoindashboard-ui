@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Contract, parseUnits, formatUnits, BrowserProvider } from "ethers";
+import { Contract, utils, providers } from "ethers";
 import routerAbi from "./abi-router.json";
 import { ROUTER_CONTRACT, TOKEN_SYMBOL, TAX_TOKEN } from "./config";
 
@@ -12,8 +12,8 @@ export default function HyperSwap() {
   useEffect(() => {
     const init = async () => {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const s = await provider.getSigner();
+        const provider = new providers.Web3Provider(window.ethereum);
+        const s = provider.getSigner();
         setSigner(s);
       }
     };
@@ -23,9 +23,9 @@ export default function HyperSwap() {
   const getEstimate = async () => {
     try {
       const router = new Contract(ROUTER_CONTRACT, routerAbi, signer);
-      const amountIn = parseUnits(amount, 18);
+      const amountIn = utils.parseUnits(amount, 18);
       const out = await router.getRate(amountIn); // router must support getRate()
-      setEstimatedOut(formatUnits(out, 18));
+      setEstimatedOut(utils.formatUnits(out, 18));
       setStatus("✅ Rate fetched");
     } catch (err) {
       setStatus("❌ Failed to fetch rate");
@@ -36,7 +36,7 @@ export default function HyperSwap() {
   const executeSwap = async () => {
     try {
       const router = new Contract(ROUTER_CONTRACT, routerAbi, signer);
-      const amountIn = parseUnits(amount, 18);
+      const amountIn = utils.parseUnits(amount, 18);
       const tx = await router.swap(amountIn); // router must support swap()
       setStatus("⏳ Waiting for confirmation...");
       await tx.wait();

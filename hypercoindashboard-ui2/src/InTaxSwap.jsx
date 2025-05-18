@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ethers } from "ethers";
+import { Contract, utils, providers } from "ethers";
 import routerAbi from "./abi-router.json";
 import { ROUTER_CONTRACT, TOKEN_SYMBOL, TAX_TOKEN } from "./config";
 
@@ -11,13 +11,13 @@ export default function InTaxSwap({ onSwapComplete }) {
 
   const getEstimate = async () => {
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = await provider.getSigner();
-      const router = new ethers.Contract(ROUTER_CONTRACT, routerAbi, signer);
+      const provider = new providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const router = new Contract(ROUTER_CONTRACT, routerAbi, signer);
 
-      const amountIn = ethers.parseUnits(amount, 18);
+      const amountIn = utils.parseUnits(amount, 18);
       const estimate = await router.getRate(amountIn); // Replace if function is named differently
-      setEstimatedOut(ethers.formatUnits(estimate, 18));
+      setEstimatedOut(utils.formatUnits(estimate, 18));
       setStatus("✅ Rate fetched");
     } catch (err) {
       setStatus("❌ Failed to fetch rate");
@@ -28,11 +28,11 @@ export default function InTaxSwap({ onSwapComplete }) {
   const executeSwap = async () => {
     try {
       setIsSwapping(true);
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = await provider.getSigner();
-      const router = new ethers.Contract(ROUTER_CONTRACT, routerAbi, signer);
+      const provider = new providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const router = new Contract(ROUTER_CONTRACT, routerAbi, signer);
 
-      const amountIn = ethers.parseUnits(amount, 18);
+      const amountIn = utils.parseUnits(amount, 18);
       const tx = await router.swap(amountIn); // Replace with correct method name if needed
       setStatus("⏳ Waiting for confirmation...");
       await tx.wait();

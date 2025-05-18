@@ -20,6 +20,7 @@ export default function App() {
         <Router>
           <Routes>
             <Route path="/" element={<WrappedHyperCoinDashboard />} />
+            <Route path="/wrapped" element={<WrappedHyperCoinDashboard />} /> {/* ✅ Added */}
             <Route path="/mint" element={<StockCoinMintForm />} />
             <Route path="/dao" element={<DAOVoting />} />
             <Route path="/swap" element={<HyperSwap />} />
