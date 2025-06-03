@@ -9,8 +9,9 @@ import {
   BASE_RATE,
   IPFS_ENABLED,
   IS_ADMIN
-} from "./config.js";
+} from "./config.js"; // Ensure config is a .js file
 
+// ✅ Strict ESM - file extensions MUST be present
 import HyperBurn from "./HyperBurn.jsx";
 import InTaxSwap from "./InTaxSwap.jsx";
 import TreasuryControls from "./TreasuryControls.jsx";
