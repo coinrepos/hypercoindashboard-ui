@@ -6,7 +6,7 @@ import StockCoinMintForm from "./StockCoinMintForm.jsx";
 import DAOVoting from "./DAOVoting.jsx";
 import HyperSwap from "./HyperSwap.jsx";
 import BridgeUI from "./BridgeUI.jsx";
-import InsurancePool from "./InsurancePool.jsx"; // Optional, confirm this exists
+import InsurancePool from "./InsurancePool.jsx"; // Optional UI
 
 function App() {
   return (
