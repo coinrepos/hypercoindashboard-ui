@@ -9,9 +9,9 @@ import {
   BASE_RATE,
   IPFS_ENABLED,
   IS_ADMIN
-} from "./config.js"; // Ensure config is a .js file
+} from "./config.js"; // use .js for config file
 
-// ✅ Strict ESM - file extensions MUST be present
+// 🧩 Components (with explicit .jsx extensions)
 import HyperBurn from "./HyperBurn.jsx";
 import InTaxSwap from "./InTaxSwap.jsx";
 import TreasuryControls from "./TreasuryControls.jsx";
@@ -22,3 +22,4 @@ import NoWalletAlert from "./NoWalletAlert.jsx";
 import StockCoinMintForm from "./StockCoinMintForm.jsx";
 import HyperSwap from "./HyperSwap.jsx";
 import BridgeUI from "./BridgeUI.jsx";
+
