@@ -1,0 +1,37 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      { "name": "toToken", "type": "address" },
+      { "name": "minReturn", "type": "uint256" }
+    ],
+    "name": "swapEtherToToken",
+    "outputs": [{ "name": "returnAmount", "type": "uint256" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "name": "fromToken", "type": "address" },
+      { "name": "toToken", "type": "address" },
+      { "name": "fromAmount", "type": "uint256" },
+      { "name": "minReturn", "type": "uint256" }
+    ],
+    "name": "swapTokenToToken",
+    "outputs": [{ "name": "returnAmount", "type": "uint256" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "name": "fromToken", "type": "address" },
+      { "name": "minReturn", "type": "uint256" }
+    ],
+    "name": "swapTokenToEther",
+    "outputs": [{ "name": "returnAmount", "type": "uint256" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

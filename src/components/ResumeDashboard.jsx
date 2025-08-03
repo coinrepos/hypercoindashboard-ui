@@ -1,5 +1,5 @@
 import React from "react";
-import { useHyperBot } from "../HyperBotContext.jsx";
+import { useHyperBot } from "./HyperBotContext";
 
 export default function ResumeDashboard() {
   const { isFrozen, dispatch } = useHyperBot();

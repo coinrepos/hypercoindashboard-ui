@@ -1,0 +1,21 @@
+# Ignore node dependencies
+node_modules
+
+# Ignore environment variables
+.env
+.env.local
+.env.*.local
+
+# Git metadata
+.git
+.gitignore
+
+# OS/IDE/system clutter
+.DS_Store
+*.log
+*.swp
+.vscode
+
+# Build output (optional, Vercel handles this automatically)
+dist
+build

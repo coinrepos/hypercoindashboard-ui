@@ -1,0 +1,17 @@
+// Example using Tailwind or your CSS
+<div className="kreds-coin-spin">
+  {/* Paste your SVG code here */}
+</div>
+
+AND in CSS
+
+.kreds-coin-spin {
+  display: inline-block;
+  animation: kreds-spin 2s linear infinite;
+}
+@keyframes kreds-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

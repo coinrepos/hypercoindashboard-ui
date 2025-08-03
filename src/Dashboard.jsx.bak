@@ -1,0 +1,44 @@
+import React from "react";
+import InTax from "./InTax";
+import TreasuryControls from "./TreasuryControls";
+import DAOTab from "./DAOTab";
+import EscrowDashboard from "./EscrowManager";
+import NetworkControlPanel from "./NetworkControlPanel";
+import WalletSelector from "./WalletSelector";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+export default function Dashboard() {
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-6">
+      <ToastContainer position="bottom-right" />
+      
+      {/* Header */}
+      <header className="mb-8 text-center">
+        <h1 className="text-4xl font-bold text-yellow-400 mb-2">🏦 KREDS Ecosystem Dashboard</h1>
+        <p className="text-gray-400">Manage treasury, taxes, DAO, and network controls</p>
+      </header>
+
+      {/* Wallet Connection */}
+      <div className="max-w-md mx-auto mb-8 bg-gray-800 p-6 rounded-lg shadow-lg">
+        <WalletSelector />
+      </div>
+
+      {/* Component Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto">
+        {/* Column 1 */}
+        <div className="space-y-6">
+          <InTax />
+          <TreasuryControls />
+        </div>
+
+        {/* Column 2 */}
+        <div className="space-y-6">
+          <DAOTab />
+          <EscrowDashboard />
+          <NetworkControlPanel />
+        </div>
+      </div>
+    </div>
+  );
+}

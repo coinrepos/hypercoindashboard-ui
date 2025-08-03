@@ -1,26 +1,41 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import SidebarNav from "./SidebarNav";
+import Dashboard from "./Dashboard";
+import TreasuryTracker from "./TreasuryTracker";
+import ValidatorRoyalties from "./ValidatorRoyalties";
+import { ValidatorMatrix, ValidatorRank, ValidatorProfitTracker } from "./components/validators";
+import "./App.css"; // Assuming global styles
 
-import WrappedHyperCoinDashboard from "./WrappedHyperCoinDashboard.jsx";
-import StockCoinMintForm from "./StockCoinMintForm.jsx";
-import DAOVoting from "./DAOVoting.jsx";
-import HyperSwap from "./HyperSwap.jsx";
-import BridgeUI from "./BridgeUI.jsx";
-import InsurancePool from "./InsurancePool.jsx"; // Optional UI
+export default function App() {
+  const [route, setRoute] = useState("Dashboard");
 
-function App() {
+  const renderRoute = () => {
+    switch (route) {
+      case "Dashboard":
+        return <Dashboard />;
+      case "TreasuryTracker":
+        return <TreasuryTracker />;
+      case "Validator Profits":
+        return (
+          <>
+            <ValidatorProfitTracker />
+            <ValidatorRoyalties />
+            <ValidatorMatrix />
+            <ValidatorRank />
+          </>
+        );
+      // Add more case blocks for other routes (Portfolio, Exchange, etc.)
+      default:
+        return <h2 style={{ color: "#fff" }}>404 – Page Not Found</h2>;
+    }
+  };
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<WrappedHyperCoinDashboard />} />
-        <Route path="/mint" element={<StockCoinMintForm />} />
-        <Route path="/dao" element={<DAOVoting />} />
-        <Route path="/swap" element={<HyperSwap />} />
-        <Route path="/bridge" element={<BridgeUI />} />
-        <Route path="/insurance" element={<InsurancePool />} />
-      </Routes>
-    </Router>
+    <div style={{ display: "flex" }}>
+      <SidebarNav onRouteChange={setRoute} />
+      <main style={{ flex: 1, padding: "2rem", backgroundColor: "#0f172a", minHeight: "100vh" }}>
+        {renderRoute()}
+      </main>
+    </div>
   );
 }
-
-export default App;

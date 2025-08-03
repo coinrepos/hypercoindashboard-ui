@@ -1,0 +1,29 @@
+[BTC Holder]
+     |
+     v
+[BTC Staked in BitBond Pool]
+     |
+     v
+[BitBond Loan Drawdown] <-----------------+
+     |                                    |
+     v                                    |
+[User Spends $ in Ecosystem]              |
+     |                                    |
+     v                                    |
+[InTax Royalty Generated]                 |
+     |                                    |
+     v                                    |
+[User "InTax Account"]                    |
+     |                                    |
+     v                                    |
+[Convert to InstantCoin]                  |
+     |                                    |
+     v                                    |
+[Spend InstantCoin]                       |
+  |           |                           |
+  v           v                           |
+[To Merchant] [To Gov/Agency]             |
+  |           |                           |
+  |           +--> [InstantCoin Burned]---+
+  v
+[Merchant Spends / Recirculates]

@@ -1,0 +1,50 @@
+/src
+├── components/
+│   ├── dao/
+│   │   ├── DAOVoting.jsx
+│   │   ├── DAOVotePanel.jsx
+│   │   └── DAOGovernancePanel.jsx
+│   ├── exchange/
+│   │   ├── HyperSwap.jsx
+│   │   ├── StockCoinExchange.jsx
+│   │   └── StockCoinMarketplace.jsx
+│   ├── mintburn/
+│   │   ├── HyperMint.jsx
+│   │   ├── HyperBurn.jsx
+│   │   ├── MintBurnPanel.jsx
+│   │   ├── StockCoinMintForm.jsx
+│   │   └── StockCoinListingForm.jsx
+│   ├── tax/
+│   │   ├── InTaxPanel.jsx
+│   │   ├── InTaxSimulator.jsx
+│   │   ├── InTaxSwap.jsx
+│   │   └── InTaxBurnSimulator.jsx
+│   ├── treasury/
+│   │   ├── TreasuryControls.jsx
+│   │   ├── TreasuryRank.jsx
+│   │   └── TreasuryTracker.jsx
+│   ├── validators/
+│   │   ├── ValidatorRanking.jsx
+│   │   ├── ValidatorMatrix.jsx
+│   │   ├── ValidatorProfitTracker.jsx
+│   │   └── ValidatorRoyalties.jsx
+│   ├── hyperbot/
+│   │   ├── HyperBotAdminPanel.jsx
+│   │   ├── HyperBotTaskMap.jsx
+│   │   ├── ProcessQueueButton.jsx
+│   │   └── FailedTaskLog.jsx
+│   ├── bridge/
+│   │   └── BridgeUI.jsx
+│   ├── insurance/
+│   │   └── InsurancePool.jsx
+│   └── shared/
+│       ├── GlobalToggle.jsx
+│       ├── SidebarNav.jsx
+│       ├── Tabs.jsx
+│       └── NoWalletAlert.jsx
+├── contexts/
+│   ├── HyperBotContext.jsx
+│   └── ThemeContext.jsx
+└── hooks/
+    ├── useContract.js
+    └── useWeb3.js

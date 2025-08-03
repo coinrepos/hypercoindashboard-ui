@@ -1,0 +1,47 @@
+// File: server.js
+
+const express = require("express");
+const fs = require("fs");
+const cors = require("cors");
+const path = require("path");
+
+const app = express();
+const PORT = 3001;
+const DATA_FILE = path.join(__dirname, "proposals.json");
+
+app.use(cors());
+app.use(express.json());
+
+// Ensure proposals.json exists
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(DATA_FILE, "[]");
+}
+
+// GET proposals
+app.get("/api/dao/proposals", (req, res) => {
+  try {
+    const data = fs.readFileSync(DATA_FILE);
+    const proposals = JSON.parse(data);
+    res.json(proposals);
+  } catch (err) {
+    console.error("Read error:", err);
+    res.status(500).json({ error: "Failed to load proposals" });
+  }
+});
+
+// POST new proposal
+app.post("/api/dao/proposals", (req, res) => {
+  try {
+    const proposal = req.body;
+    const data = fs.readFileSync(DATA_FILE);
+    const proposals = JSON.parse(data);
+    proposals.unshift(proposal); // Add to beginning
+    fs.writeFileSync(DATA_FILE, JSON.stringify(proposals, null, 2));
+    res.status(201).json({ message: "Proposal submitted" });
+  } catch (err) {
+    console.error("Write error:", err);
+    res.status(500).json({ error: "Failed to submit proposal" });
+  }
+});
+
+app.listen(PORT, () => console.log(`🧠 DAO server listening on http://localhost:${PORT}`));

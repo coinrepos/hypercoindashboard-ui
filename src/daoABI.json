@@ -1,0 +1,98 @@
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import abi from "./daoAbi.json"; // DAO contract ABI must be placed here
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { FaGavel } from "react-icons/fa";
+
+const DAO_ADDRESS = "0xE91Ab7b3b810B7C40c0197Df87cCc6d2D02F73f8"; // Replace if DAO is separate from KREDS
+
+export default function KREDSDAO() {
+  const [account, setAccount] = useState(null);
+  const [daoContract, setDaoContract] = useState(null);
+  const [proposal, setProposal] = useState("");
+  const [owner, setOwner] = useState(null);
+
+  useEffect(() => {
+    connectWallet();
+  }, []);
+
+  async function connectWallet() {
+    if (window.ethereum) {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      setAccount(accounts[0]);
+
+      const contract = new ethers.Contract(DAO_ADDRESS, abi, signer);
+      setDaoContract(contract);
+
+      try {
+        const contractOwner = await contract.owner();
+        setOwner(contractOwner);
+      } catch (err) {
+        toast.error("Failed to fetch DAO owner");
+      }
+    } else {
+      toast.error("MetaMask not detected");
+    }
+  }
+
+  async function deployProposal() {
+    if (!daoContract) return;
+    try {
+      const tx = await daoContract.deployProposal();
+      await tx.wait();
+      toast.success("DAO Proposal Deployed!");
+    } catch (err) {
+      toast.error("Proposal failed: " + err.message);
+    }
+  }
+
+  async function viewTreasuryStatus() {
+    if (!daoContract) return;
+    try {
+      const status = await daoContract.treasuryStatus();
+      setProposal(status);
+    } catch (err) {
+      toast.error("Failed to fetch treasury status");
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-white p-6">
+      <ToastContainer position="top-right" autoClose={4000} />
+      <div className="max-w-lg mx-auto bg-slate-800 rounded shadow p-6">
+        <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <FaGavel /> KREDS DAO
+        </h1>
+
+        <p className="mb-2"><strong>Connected Wallet:</strong> {account || "Not connected"}</p>
+        <p className="mb-4"><strong>DAO Owner:</strong> {owner || "Loading..."}</p>
+
+        <div className="space-y-4">
+          <button
+            onClick={deployProposal}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded"
+          >
+            Deploy DAO Proposal
+          </button>
+
+          <button
+            onClick={viewTreasuryStatus}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded"
+          >
+            View Treasury Status
+          </button>
+        </div>
+
+        {proposal && (
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold">Proposal Output</h2>
+            <p className="mt-2 p-3 bg-slate-700 rounded">{proposal}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

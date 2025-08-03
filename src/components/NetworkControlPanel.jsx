@@ -1,6 +1,6 @@
 // src/components/NetworkControlPanel.jsx
 import React, { useState } from "react";
-import { useHyperBot } from "../HyperBotContext.jsx";
+import { useHyperBot } from "./HyperBotContext";
 
 export default function NetworkControlPanel() {
   const { dispatch } = useHyperBot();

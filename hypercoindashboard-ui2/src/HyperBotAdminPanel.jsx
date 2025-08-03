@@ -1,6 +1,7 @@
-import React from "react";
-import { Button } from "./components/ui/Button";
+import React, { useState } from "react";
+import { Button } from "./ui/Button";
 import { useHyperBot } from "./HyperBotContext";
+import ProcessQueueButton from "./components/ProcessQueueButton";
 
 // 🔐 SecureRun helper function
 async function secureRun(file) {
@@ -26,6 +27,27 @@ async function secureRun(file) {
 export default function HyperBotAdminPanel() {
   const { isOnline } = useHyperBot();
 
+  // 🧠 State for queue processing
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [status, setStatus] = useState("");
+  const isReady = true; // Replace with actual readiness condition if needed
+
+  const handleProcess = async () => {
+    try {
+      setIsProcessing(true);
+      setStatus("Processing queue...");
+      // TODO: Replace with real smart contract call or API logic
+      const res = await fetch("/api/process-queue");
+      const json = await res.json();
+      setStatus("✅ Queue processed: " + (json.message || "Success"));
+    } catch (err) {
+      console.error(err);
+      setStatus("❌ Queue processing failed.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div className="bg-gray-900 text-green-400 p-4 rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-4">🛠️ HyperBot Admin Ops</h2>
@@ -41,6 +63,15 @@ export default function HyperBotAdminPanel() {
         <Button onClick={() => secureRun("triggerFreeze.js")} className="ml-2 bg-red-600 hover:bg-red-700">
           🧊 Trigger Freeze (Admin)
         </Button>
+
+        <div className="mt-4">
+          <ProcessQueueButton
+            onClick={handleProcess}
+            disabled={!isReady}
+            loading={isProcessing}
+          />
+          <p className="mt-2">{status}</p>
+        </div>
       </div>
 
       <div className="mt-4 text-sm text-yellow-300">

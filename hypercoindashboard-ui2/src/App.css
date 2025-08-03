@@ -35,4 +35,7 @@
   to {
     transform: rotate(360deg);
   }
+}.process-queue-btn:hover {
+  background-color: #45a049;
 }
+

@@ -1,0 +1,14 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      { "name": "toToken", "type": "address" },
+      { "name": "minReturn", "type": "uint256" }
+    ],
+    "name": "swapEtherToToken",
+    "outputs": [{ "name": "returnAmount", "type": "uint256" }],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+  }
+]

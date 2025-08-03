@@ -1,0 +1,17 @@
+$sourceDir = "src"
+$files = Get-ChildItem -Recurse -Path $sourceDir -Include *.js, *.jsx
+
+Write-Host "🔧 Rewriting import paths..."
+
+foreach ($file in $files) {
+    $content = Get-Content $file.FullName
+    $newContent = $content -replace "from './components/", "from './"
+
+    # Optional JSX extension fixer
+    $newContent = $newContent -replace "(from './[^']+)(?<!\.jsx)'", '$1.jsx''
+
+    Set-Content -Path $file.FullName -Value $newContent
+    Write-Host "✅ Fixed: $($file.Name)"
+}
+
+Write-Host "🚀 All imports rewritten successfully."

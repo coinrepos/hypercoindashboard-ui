@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import StockCoinListingForm from "./StockCoinListingForm";
 
-
 export default function StockCoinMarketplace() {
   const [allAssets, setAllAssets] = useState([]);
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
-    // Simulated inventory of tokenized StockCoins
     setAllAssets([
       {
         id: 1,
@@ -44,37 +42,21 @@ export default function StockCoinMarketplace() {
     alert(`✅ You’ve bought ${symbol}!\nThis would trigger a smart contract interaction in production.`);
   };
 
-return (
-  <div style={{ padding: "2rem", backgroundColor: "#0f172a", color: "#fff", marginTop: "2rem", borderRadius: "8px" }}>
-    <h2>🛒 StockCoin Marketplace</h2>
+  return (
+    <div style={{ padding: "2rem", backgroundColor: "#0f172a", color: "#fff", marginTop: "2rem", borderRadius: "8px" }}>
+      <h2>🛒 StockCoin Marketplace</h2>
 
-    <StockCoinListingForm onNewListing={(asset) => setAllAssets([asset, ...allAssets])} />
+      <StockCoinListingForm onNewListing={(asset) => setAllAssets([asset, ...allAssets])} />
 
-    <div style={{ marginBottom: "1rem", marginTop: "2rem" }}>
-      <label style={{ marginRight: "0.5rem" }}>Filter by type:</label>
-      <select value={filter} onChange={(e) => setFilter(e.target.value)} style={selectStyle}>
-        <option value="All">All</option>
-        <option value="Real Estate">Real Estate</option>
-        <option value="Digital Book">Digital Book</option>
-        <option value="Business">Business</option>
-      </select>
-    </div>
-
-    {filteredAssets.map((asset) => (
-      <div key={asset.id} style={cardStyle}>
-        <h4>{asset.name || asset.symbol} ({asset.symbol})</h4>
-        <p><strong>Type:</strong> {asset.type || asset.assetType}</p>
-        <p><strong>Price:</strong> {asset.price} HYPE</p>
-        <p><strong>Owner:</strong> {asset.owner}</p>
-        {asset.description && <p><strong>Desc:</strong> {asset.description}</p>}
-        <button onClick={() => handleBuy(asset.symbol)} style={buyButton}>
-          Buy Now
-        </button>
+      <div style={{ marginBottom: "1rem", marginTop: "2rem" }}>
+        <label style={{ marginRight: "0.5rem" }}>Filter by type:</label>
+        <select value={filter} onChange={(e) => setFilter(e.target.value)} style={selectStyle}>
+          <option value="All">All</option>
+          <option value="Real Estate">Real Estate</option>
+          <option value="Digital Book">Digital Book</option>
+          <option value="Business">Business</option>
+        </select>
       </div>
-    ))}
-  </div>
-);
-
 
       {filteredAssets.map((asset) => (
         <div key={asset.id} style={cardStyle}>
@@ -82,6 +64,7 @@ return (
           <p><strong>Type:</strong> {asset.type}</p>
           <p><strong>Price:</strong> {asset.price} HYPE</p>
           <p><strong>Owner:</strong> {asset.owner}</p>
+          {asset.description && <p><strong>Desc:</strong> {asset.description}</p>}
           <button onClick={() => handleBuy(asset.symbol)} style={buyButton}>
             Buy Now
           </button>
